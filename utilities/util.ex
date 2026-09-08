@@ -27,10 +27,27 @@ defmodule Util do
   end
 
   def ingresar(mensaje, :entero) do
-    mensaje
+    #mensaje
+    # |> IO.gets()
+    # |> String.trim()
+    # |> String.to_integer()
+    input = mensaje
     |> IO.gets()
     |> String.trim()
-    |> String.to_integer()
+
+    case Integer.parse(input) do
+      {number, ""} ->
+        #IO.log("El entero es: #{number}")
+        number
+
+      {number, _rest} ->
+        IO.puts("Advertencia: sobró texto no numérico: #{inspect(_rest)}")
+        number
+
+      :error ->
+        IO.puts("No es un entero válido. Inténtalo de nuevo.")
+        ingresar(mensaje, :entero)
+    end
   end
 
 end
