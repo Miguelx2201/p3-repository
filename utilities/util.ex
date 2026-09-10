@@ -27,26 +27,41 @@ defmodule Util do
   end
 
   def ingresar(mensaje, :entero) do
-    #mensaje
-    # |> IO.gets()
-    # |> String.trim()
-    # |> String.to_integer()
-    input = mensaje
+  input =
+    mensaje
     |> IO.gets()
     |> String.trim()
 
-    case Integer.parse(input) do
+  case Integer.parse(input) do
+    {number, ""} ->
+      number
+
+    {number, rest} ->
+      IO.puts("Advertencia: se ignoró texto no numérico: #{inspect(rest)}")
+      number
+
+    :error ->
+      IO.puts("Error: debe ingresar un número entero válido.\n")
+      ingresar(mensaje, :entero) # Reintenta pedir la entrada de forma recursiva
+  end
+end
+  def ingresar(mensaje, :real) do
+    input =
+      mensaje
+      |> IO.gets()
+      |> String.trim()
+
+    case Float.parse(input) do
       {number, ""} ->
-        #IO.log("El entero es: #{number}")
         number
 
-      {number, _rest} ->
-        IO.puts("Advertencia: sobró texto no numérico: #{inspect(_rest)}")
+      {number, rest} ->
+        IO.puts("Advertencia: se ignoró texto no numérico: #{inspect(rest)}")
         number
 
       :error ->
-        IO.puts("No es un entero válido. Inténtalo de nuevo.")
-        ingresar(mensaje, :entero)
+        IO.puts("Error: debe ingresar un número real válido.\n")
+        ingresar(mensaje, :real) # Reintenta pedir la entrada de forma recursiva
     end
   end
 
