@@ -15,6 +15,11 @@ defmodule Util do
     System.cmd("java", ["-cp", @base, "Mensaje", mensaje])
   end
 
+  def mostrar_error(mensaje) do
+    mensaje
+    |> IO.puts(:standard_error)
+  end
+
   def ingresar_texto_java(mensaje) do
     {texto, _code} = System.cmd("java", ["-cp", @base, "Texto", mensaje])
     texto
@@ -27,42 +32,28 @@ defmodule Util do
   end
 
   def ingresar(mensaje, :entero) do
-  input =
-    mensaje
-    |> IO.gets()
-    |> String.trim()
-
-  case Integer.parse(input) do
-    {number, ""} ->
-      number
-
-    {number, rest} ->
-      IO.puts("Advertencia: se ignoró texto no numérico: #{inspect(rest)}")
-      number
-
-    :error ->
-      IO.puts("Error: debe ingresar un número entero válido.\n")
-      ingresar(mensaje, :entero) # Reintenta pedir la entrada de forma recursiva
+    ingresar(mensaje, &String.to_integer/1 , :entero)
   end
-end
   def ingresar(mensaje, :real) do
-    input =
+    ingresar(mensaje, &String.to_float/1 , :real)
+  end
+
+  def ingresar(mensaje, parser, tipo) do
+    try do
       mensaje
-      |> IO.gets()
-      |> String.trim()
+      |> ingresar(:texto)
+      |> parser.()
+    rescue
+      ArgumentError ->
+        "Error, se espera que ingrese un #{tipo}\n"
+        |> mostrar_error()
 
-    case Float.parse(input) do
-      {number, ""} ->
-        number
-
-      {number, rest} ->
-        IO.puts("Advertencia: se ignoró texto no numérico: #{inspect(rest)}")
-        number
-
-      :error ->
-        IO.puts("Error: debe ingresar un número real válido.\n")
-        ingresar(mensaje, :real) # Reintenta pedir la entrada de forma recursiva
+      mensaje
+      |> ingresar(parser, tipo)
     end
   end
 
+  def formatter(valor) do
+    :erlang.float_to_binary(valor, decimals: 2)
+  end
 end
