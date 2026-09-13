@@ -9,7 +9,15 @@ defmodule Tienda do
   10 de Septiembre de 2026
   """
   def main do
-
+    descuento_estudiante = crear_descuento(20)
+    descuento_empleado = crear_descuento(35)
+    estudiante = descuento_estudiante.(50000)
+    empleado = descuento_empleado.(50000)
+    "Descuento estudiante: #{Util.formatter(estudiante)}\nDescuento empleado: #{Util.formatter(empleado)}"
+    |> Util.mostrar_mensaje_java()
+  end
+  def crear_descuento(descuento) do
+    fn precio -> precio - (precio*descuento/100) end
   end
 end
 
