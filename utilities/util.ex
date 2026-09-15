@@ -16,8 +16,7 @@ defmodule Util do
   end
 
   def mostrar_error(mensaje) do
-    mensaje
-    |> IO.puts(:standard_error)
+    IO.puts(:standard_error, mensaje)
   end
 
   def ingresar_texto_java(mensaje) do
