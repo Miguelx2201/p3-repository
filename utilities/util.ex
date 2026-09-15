@@ -31,6 +31,20 @@ defmodule Util do
     |> String.trim()
   end
 
+  def ingresar(mensaje, :boolean) do
+    mensaje = mensaje
+    |> IO.gets()
+    |> String.trim()
+    |> String.downcase()
+    |> String.to_atom()
+
+    if mensaje == :si do
+      true
+    else
+      false
+    end
+  end
+
   def ingresar(mensaje, :entero) do
     ingresar(mensaje, &String.to_integer/1 , :entero)
   end
