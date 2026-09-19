@@ -13,9 +13,9 @@ defmodule Tarea do
         {:error, "Fecha inválida. Debe usar el formato YYYY-MM-DD y ser una fecha real."}
     end
   end
-  def get_titulo({:tarea, titulo, descripcion, fecha_entrega}), do: titulo
-  def get_descripcion({:tarea, titulo, descripcion, fecha_entrega}), do: descripcion
-  def get_fecha_entrega({:tarea, titulo, descripcion, fecha_entrega}), do: fecha_entrega
+  def get_titulo({:tarea, titulo, _descripcion, _fecha_entrega}), do: titulo
+  def get_descripcion({:tarea, _titulo, descripcion, _fecha_entrega}), do: descripcion
+  def get_fecha_entrega({:tarea, _titulo, _descripcion, fecha_entrega}), do: fecha_entrega
   def mostrar({:tarea, titulo, descripcion, fecha_entrega}) do
     """
     Tarea:#{titulo}.
