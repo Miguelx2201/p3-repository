@@ -1,47 +1,73 @@
 defmodule Asignatura do
   @doc """
-  Agrega una asignatura, recibe como parametro el mapa de asignaturas actuales, y el nombre de la nueva asignatura.
-  Como llave (key) asigna el nombre de la asignatura
-  Como valor crea una lista vacia, en esta lista vacia es en la que se agregaran las tareas.
+  Crea una nueva asignatura y la agrega al mapa de asignaturas. Si la asignatura ya existe, no hace nada.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas actuales.
+  - `nombre_asignatura`: Nombre de la nueva asignatura a crear.
+
+  ## Retorno
+  - `map`: Mapa de asignaturas actualizado con la nueva asignatura.
   """
   def crear_asignatura(asignaturas, nombre_asignatura) do
     Map.put_new(asignaturas, nombre_asignatura, [])
   end
 
+  @doc """
+  Elimina una asignatura del mapa de asignaturas.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas actuales.
+  - `nombre_asignatura`: Nombre de la asignatura a eliminar.
+
+  ## Retorno
+  - `map`: Mapa de asignaturas actualizado sin la asignatura eliminada.
+  """
   def eliminar_asignatura(asignaturas, nombre_asignatura) do
     Map.delete(asignaturas, nombre_asignatura)
   end
+
   @doc """
-  Agrega una tarea al inicio de la lista, para ello se usa el operador | para dejar la nueva tarea al inicio.
-  Asi reducimos la complejidad computacional.
-  El metodo va recibir nuestra lista de asignaturas, el nombre de la asignatura a la que le queremos añadir la tarea, y la propia tarea.
-  Luego usando Map.update() vamos a pasar nuestro mapa de asignaturas, como llave el nombre de la asignatura, establecemos como valor por defecto una lista que solo contiene esa tarea, y una funcion anonima que lo que hace es recibir la lista de tareas, y agregar nuestra nueva tarea al inicio.
+  Agrega una tarea a una asignatura existente.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas actuales.
+  - `nombre_asignatura`: Nombre de la asignatura a la que se agregará la tarea.
+  - `tarea`: Tarea a agregar.
+
+  ## Retorno
+  - `map`: Mapa de asignaturas actualizado con la nueva tarea.
   """
   def agregar_tarea(asignaturas, nombre_asignatura, tarea) do
     Map.update(asignaturas, nombre_asignatura, [tarea], fn tareas -> [tarea | tareas] end)
   end
+
   @doc """
-  Elimina una tarea obteniendola en base a su tiulo.
-  El metodo va recibir el mapa de asignaturas, el nombre de la asignatura y el titulo de la tarea que queremos borrar.
-  Con Map.update() pasaremos nuestro mapa de asignaturas, el nombre de la asignatura (key) y establecemos como valor por defecto una lista vacia, luego pasamos una
-  funcion anonima que recibe la lista de tareas, y a esa lista le aplica Enum.reject() que nos va devolver la misma lista excluyendo el valor que cumpla con la con
-  la condición de que su titulo sea igual al titulo de la tarea que queremos eliminar. Esto nos retornara la misma lista de tareas exceptuando aquella lista
-  con el titulo que buscamos eliminar.
+  Elimina una tarea de una asignatura basándose en el título de la tarea.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas actuales.
+  - `nombre_asignatura`: Nombre de la asignatura de la que se eliminará la tarea.
+  - `titulo_tarea`: Título de la tarea a eliminar.
+
+  ## Retorno
+  - `map`: Mapa de asignaturas actualizado sin la tarea eliminada.
   """
   def eliminar_tarea(asignaturas, nombre_asignatura, titulo_tarea) do
     titulo_tarea_down = String.downcase(titulo_tarea)
-    update_tareas(asignaturas, nombre_asignatura, fn tareas ->
-    Enum.reject(tareas, fn tarea -> String.downcase(Tarea.get_titulo(tarea)) == titulo_tarea_down end)
-   end)
+    Map.update(asignaturas, nombre_asignatura, [], fn tareas ->
+      Enum.reject(tareas, fn tarea -> String.downcase(Tarea.get_titulo(tarea)) == titulo_tarea_down end)
+    end)
   end
-
-  defp update_tareas(asignaturas, nombre_asignatura, update_fun) do
-    Map.update(asignaturas, nombre_asignatura, [], update_fun)
-  end
-
 
   @doc """
-  Lista las tareas de manera ordenada segun su fecha de entrega.
+  Lista todas las tareas de todas las asignaturas, ordenadas por fecha de entrega.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas.
+
+  ## Retorno
+  - `list`: Lista de tareas ordenadas por fecha de entrega.
   """
   def listar_tareas_ordenadas(asignaturas) do
     asignaturas
@@ -50,8 +76,16 @@ defmodule Asignatura do
     |> Enum.sort_by(&Tarea.get_fecha_entrega/1, Date)
   end
 
+  @doc """
+  Lista los nombres de todas las asignaturas.
+
+  ## Parámetros
+  - `asignaturas`: Mapa de asignaturas.
+
+  ## Retorno
+  - `list`: Lista de nombres de asignaturas.
+  """
   def listar_asignaturas(asignaturas) do
     Map.keys(asignaturas)
   end
-
 end
