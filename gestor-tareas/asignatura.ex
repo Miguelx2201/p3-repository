@@ -30,10 +30,15 @@ defmodule Asignatura do
   """
   def eliminar_tarea(asignaturas, nombre_asignatura, titulo_tarea) do
     titulo_tarea_down = String.downcase(titulo_tarea)
-    Map.update(asignaturas, nombre_asignatura, [], fn tareas ->
+    update_tareas(asignaturas, nombre_asignatura, fn tareas ->
     Enum.reject(tareas, fn tarea -> String.downcase(Tarea.get_titulo(tarea)) == titulo_tarea_down end)
    end)
   end
+
+  defp update_tareas(asignaturas, nombre_asignatura, update_fun) do
+    Map.update(asignaturas, nombre_asignatura, [], update_fun)
+  end
+
 
   @doc """
   Lista las tareas de manera ordenada segun su fecha de entrega.
