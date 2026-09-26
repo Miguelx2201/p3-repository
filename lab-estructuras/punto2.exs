@@ -105,42 +105,105 @@ defmodule Punto2 do
         disponible: true
       }
     ]
+
     filtrar_vuelos_disponibles(vuelos)
     calculo_pasajeros_por_aerolinea(vuelos)
     formatear_vuelos(vuelos)
     filtrar_vuelos_precio_menor_aplicar_descuento(vuelos, 400_000)
+    filtrar_aerolineas_vuelos_duracion(vuelos)
+    calcular_rutas_mas_rentables(vuelos, 3)
   end
+
   defp filtrar_vuelos_disponibles(vuelos) do
     vuelos_disponibles = Enum.filter(vuelos, fn vuelo -> vuelo.disponible end)
     codigos_vuelos = Enum.map(vuelos_disponibles, fn vuelo -> vuelo.codigo end) |> Enum.sort()
     IO.inspect(codigos_vuelos)
   end
+
   defp calculo_pasajeros_por_aerolinea(vuelos) do
     aerolineas = Enum.map(vuelos, fn vuelo -> vuelo.aerolinea end) |> Enum.uniq()
-    pasajeros_por_aerolinea = Enum.map(aerolineas, fn aerolinea ->
-      vuelos_aerolinea = Enum.filter(vuelos, fn vuelo -> vuelo.aerolinea == aerolinea end)
-      total_pasajeros = Enum.reduce(vuelos_aerolinea, 0, fn vuelo, suma -> suma + vuelo.pasajeros end)
-      {aerolinea, total_pasajeros}
-    end)
+
+    pasajeros_por_aerolinea =
+      Enum.map(aerolineas, fn aerolinea ->
+        vuelos_aerolinea = Enum.filter(vuelos, fn vuelo -> vuelo.aerolinea == aerolinea end)
+
+        total_pasajeros =
+          Enum.reduce(vuelos_aerolinea, 0, fn vuelo, suma -> suma + vuelo.pasajeros end)
+
+        {aerolinea, total_pasajeros}
+      end)
+
     IO.inspect(pasajeros_por_aerolinea)
   end
+
   defp formatear_vuelos(vuelos) do
-    cadenas = Enum.map(vuelos, fn vuelo -> "#{vuelo.codigo} - #{vuelo.origen} -> #{vuelo.destino}: #{div(vuelo.duracion, 60)}h #{cond do
-      rem(vuelo.duracion, 60) < 10 -> "0#{rem(vuelo.duracion, 60)}m"
-      true -> "#{rem(vuelo.duracion, 60)}m"
-    end}"end)
+    cadenas =
+      Enum.map(vuelos, fn vuelo ->
+        "#{vuelo.codigo} - #{vuelo.origen} -> #{vuelo.destino}: #{div(vuelo.duracion, 60)}h #{cond do
+          rem(vuelo.duracion, 60) < 10 -> "0#{rem(vuelo.duracion, 60)}m"
+          true -> "#{rem(vuelo.duracion, 60)}m"
+        end}"
+      end)
+
     IO.inspect(cadenas)
   end
+
   defp filtrar_vuelos_precio_menor_aplicar_descuento(vuelos, precio) do
-    vuelos_filtrados = Enum.filter(vuelos, fn vuelo -> vuelo.precio < precio end) |> Enum.sort_by(fn vuelo -> vuelo.precio end)
-    tuplas_vuelos = Enum.map(vuelos_filtrados, fn vuelo ->
-      {
-        "#{vuelo.codigo}",
-        "#{vuelo.origen}-#{vuelo.destino}",
-        "#{vuelo.precio*0.9 |> Util.formatter()}"
-      }
-    end)
+    vuelos_filtrados =
+      Enum.filter(vuelos, fn vuelo -> vuelo.precio < precio end)
+      |> Enum.sort_by(fn vuelo -> vuelo.precio end)
+
+    tuplas_vuelos =
+      Enum.map(vuelos_filtrados, fn vuelo ->
+        {
+          "#{vuelo.codigo}",
+          "#{vuelo.origen}-#{vuelo.destino}",
+          "#{(vuelo.precio * 0.9) |> Util.formatter()}"
+        }
+      end)
+
     IO.inspect(tuplas_vuelos)
+  end
+
+  defp clasificar_vuelos_por_duracion(vuelos) do
+    Enum.map(vuelos, fn vuelo ->
+      clasificacion =
+        cond do
+          vuelo.duracion < 60 -> :corto
+          vuelo.duracion >= 60 and vuelo.duracion <= 120 -> :medio
+          vuelo.duracion > 120 -> :largo
+        end
+
+      Map.put(vuelo, :clasificacion, clasificacion)
+    end)
+  end
+
+  defp filtrar_aerolineas_vuelos_duracion(vuelos) do
+    aerolineas = Enum.map(vuelos, fn vuelo -> vuelo.aerolinea end) |> Enum.uniq()
+    vuelos_clasificados = clasificar_vuelos_por_duracion(vuelos)
+
+    aerolineas_todo_tipo_vuelos =
+      Enum.filter(aerolineas, fn aerolinea ->
+        vuelos_clasificados_aerolinea =
+          Enum.filter(vuelos_clasificados, fn vuelo -> vuelo.aerolinea == aerolinea end)
+
+        tipos_vuelos_aerolinea =
+          Enum.map(vuelos_clasificados_aerolinea, fn vuelo -> vuelo.clasificacion end)
+
+        Enum.member?(tipos_vuelos_aerolinea, :corto) and
+          Enum.member?(tipos_vuelos_aerolinea, :medio) and
+          Enum.member?(tipos_vuelos_aerolinea, :largo)
+      end)
+
+    IO.inspect(aerolineas_todo_tipo_vuelos)
+  end
+  defp calcular_rutas_mas_rentables(vuelos, n) do
+    Enum.map(vuelos, fn vuelo -> {"#{vuelo.origen}-#{vuelo.destino}", vuelo.precio * vuelo.pasajeros} end)
+    |> Enum.group_by(fn {ruta, _} -> ruta end, fn {_, ingreso} -> ingreso end)
+    |> Enum.map(fn {ruta, ingresos} -> {ruta, Enum.sum(ingresos)} end)
+    |> Enum.sort_by(fn {_, ingresos} -> ingresos end, :desc)
+    |> Enum.take(n)
+    |> IO.inspect()
   end
 end
 
