@@ -1,4 +1,4 @@
-defmodule Cadenas do
+defmodule Vocales do
   def main do
     cadena = "Hola Mundo"
     n_vocales = contar_vocales(cadena)
@@ -23,3 +23,4 @@ defmodule Cadenas do
   end
 
 end
+Vocales.main()
