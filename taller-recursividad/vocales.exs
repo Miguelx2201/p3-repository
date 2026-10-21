@@ -2,7 +2,8 @@ defmodule Vocales do
   def main do
     cadena = "Hola Mundo"
     n_vocales = contar_vocales(cadena)
-    IO.puts(n_vocales)
+    n_vocales1 = contar_vocales1(cadena)
+    IO.puts("#{n_vocales} \n#{n_vocales1}")
   end
 
   def contar_vocales(cadena) do
@@ -22,5 +23,24 @@ defmodule Vocales do
     end
   end
 
+  def contar_vocales1(cadena) do
+    cadena |> String.downcase() |> contar_vocales1(0)
+  end
+
+  defp contar_vocales1("", count) do
+    count
+  end
+
+  defp contar_vocales1(cadena, count) do
+    vocales = ["a", "e", "i", "o", "u"]
+
+    head = cadena |> String.first()
+    tail = cadena |> String.slice(1..-1//1)
+    if head in vocales do
+      contar_vocales1(tail, count + 1)
+    else
+      contar_vocales1(tail, count)
+    end
+  end
 end
 Vocales.main()
