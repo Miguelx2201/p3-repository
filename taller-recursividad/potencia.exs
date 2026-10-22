@@ -1,9 +1,12 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule Potencia do
   def main do
     n = 16
     b = 2
     is_power = is_power?(n, b)
-    IO.puts(is_power)
+    Util.mostrar_mensaje(is_power)
   end
 
   def is_power?(0, _b), do: false

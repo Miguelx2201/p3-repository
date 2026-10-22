@@ -1,8 +1,11 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule NumeroPerfecto do
   def main do
     numero = 28
     is_perfect = is_perfect?(numero)
-    IO.puts(is_perfect)
+    Util.mostrar_mensaje(is_perfect)
   end
 
   def is_perfect?(0) do

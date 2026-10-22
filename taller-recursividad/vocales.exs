@@ -1,9 +1,12 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule Vocales do
   def main do
     cadena = "Hola Mundo"
     n_vocales = contar_vocales(cadena)
     n_vocales1 = contar_vocales1(cadena)
-    IO.puts("#{n_vocales} \n#{n_vocales1}")
+    Util.mostrar_mensaje("#{n_vocales} \n#{n_vocales1}")
   end
 
   def contar_vocales(cadena) do

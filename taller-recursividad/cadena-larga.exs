@@ -1,8 +1,11 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule CadenaLarga do
   def main do
     lista = ["hola", "onomatopeya", "kitagawa", "rocky", "aula", "rendimiento", "calidad"]
     mas_larga = obtener_cadena_mas_larga(lista)
-    IO.puts(mas_larga)
+    Util.mostrar_mensaje(mas_larga)
   end
 
   def obtener_cadena_mas_larga([]) do

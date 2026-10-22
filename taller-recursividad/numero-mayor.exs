@@ -1,8 +1,11 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule NumeroMayor do
   def main do
     lista = [2, 4, 5, 2, 6, 7, 3, 10]
     mayor = obtener_numero_mayor_divide(lista)
-    IO.puts(mayor)
+    Util.mostrar_mensaje(mayor)
   end
 
   def obtener_numero_mayor_divide([]) do

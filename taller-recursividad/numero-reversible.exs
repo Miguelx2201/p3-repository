@@ -1,8 +1,11 @@
+Code.require_file("../utilities/util.ex", __DIR__)
+alias Util
+
 defmodule NumeroReversible do
   def main do
     numero = 36
     es_reversible = es_reversible?(numero)
-    IO.puts(es_reversible)
+    Util.mostrar_mensaje(es_reversible)
   end
 
   def es_reversible?(numero) do
