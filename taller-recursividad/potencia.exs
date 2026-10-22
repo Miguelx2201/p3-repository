@@ -3,8 +3,8 @@ alias Util
 
 defmodule Potencia do
   def main do
-    n = 16
-    b = 2
+    n = 64
+    b = 4
     is_power = is_power?(n, b)
     Util.mostrar_mensaje(is_power)
   end
