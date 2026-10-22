@@ -3,7 +3,7 @@ alias Util
 
 defmodule CadenaLarga do
   def main do
-    lista = ["hola", "onomatopeya", "kitagawa", "rocky", "aula", "rendimiento", "calidad"]
+    lista = ["robinson", "arias", "profe", "calidad"]
     mas_larga = obtener_cadena_mas_larga(lista)
     Util.mostrar_mensaje(mas_larga)
   end
