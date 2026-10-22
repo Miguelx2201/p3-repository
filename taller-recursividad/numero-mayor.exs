@@ -3,7 +3,7 @@ alias Util
 
 defmodule NumeroMayor do
   def main do
-    lista = [2, 4, 5, 2, 6, 7, 3, 10]
+    lista = [2, 4, 6, 7, 10]
     mayor = obtener_numero_mayor_divide(lista)
     Util.mostrar_mensaje(mayor)
   end

@@ -3,7 +3,7 @@ alias Util
 
 defmodule Vocales do
   def main do
-    cadena = "Hola Mundo"
+    cadena = "Hola"
     n_vocales = contar_vocales(cadena)
     n_vocales1 = contar_vocales1(cadena)
     Util.mostrar_mensaje("#{n_vocales} \n#{n_vocales1}")
