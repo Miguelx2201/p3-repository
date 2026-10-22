@@ -3,7 +3,7 @@ alias Util
 
 defmodule NumeroPerfecto do
   def main do
-    numero = 28
+    numero = 6
     is_perfect = is_perfect?(numero)
     Util.mostrar_mensaje(is_perfect)
   end
