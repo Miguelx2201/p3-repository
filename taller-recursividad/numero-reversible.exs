@@ -31,13 +31,16 @@ defmodule NumeroReversible do
     end
   end
 
-  defp solo_digitos_impares?(numero) do
-    if numero > 0 do
-      if rem(numero, 10) == 1, do: false
+  defp solo_digitos_impares?(numero) when numero > 0 do
+    if rem(numero, 10) == 1 do
       solo_digitos_impares?(div(numero,10))
     else
-      true
+      false
     end
+  end
+
+  defp solo_digitos_impares?(numero) when numero == 0 do
+    true
   end
 end
 NumeroReversible.main()
