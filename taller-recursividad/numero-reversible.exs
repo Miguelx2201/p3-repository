@@ -32,7 +32,8 @@ defmodule NumeroReversible do
   end
 
   defp solo_digitos_impares?(numero) when numero > 0 do
-    if rem(numero, 10) == 1 do
+    digito = rem(numero, 10)
+    if rem(digito, 2) == 1 do
       solo_digitos_impares?(div(numero,10))
     else
       false
