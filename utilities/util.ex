@@ -48,7 +48,14 @@ defmodule Util do
     ingresar(mensaje, &String.to_integer/1 , :entero)
   end
   def ingresar(mensaje, :real) do
-    ingresar(mensaje, &String.to_float/1 , :real)
+    ingresar(mensaje, &parse_float/1 , :real)
+  end
+
+  defp parse_float(str) do
+    case Float.parse(str) do
+      {num, ""} -> num
+    _   -> raise ArgumentError, "Entrada no válida: #{str}"
+    end
   end
 
   def ingresar(mensaje, parser, tipo) do
