@@ -76,4 +76,12 @@ defmodule Util do
   def formatter(valor) do
     :erlang.float_to_binary(valor, decimals: 2)
   end
+
+    def formatter_booleano(bool) do
+    if bool do
+      "SI"
+    else
+      "NO"
+    end
+  end
 end
