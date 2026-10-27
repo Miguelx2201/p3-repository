@@ -1,7 +1,8 @@
 # utilities/util.ex
 
 defmodule Util do
-  @base Path.expand(__DIR__)  # ruta absoluta a la carpeta "utilities/"
+  # ruta absoluta a la carpeta "utilities/"
+  @base Path.expand(__DIR__)
 
   def mostrar_mensaje(mensaje) do
     IO.puts(mensaje)
@@ -24,18 +25,20 @@ defmodule Util do
     texto
   end
 
-  def ingresar(mensaje, :texto) do # :texto es un atomo (constante) con el mismo nombre
+  # :texto es un atomo (constante) con el mismo nombre
+  def ingresar(mensaje, :texto) do
     mensaje
     |> IO.gets()
     |> String.trim()
   end
 
   def ingresar(mensaje, :boolean) do
-    mensaje = mensaje
-    |> IO.gets()
-    |> String.trim()
-    |> String.downcase()
-    |> String.to_atom()
+    mensaje =
+      mensaje
+      |> IO.gets()
+      |> String.trim()
+      |> String.downcase()
+      |> String.to_atom()
 
     if mensaje == :si do
       true
@@ -45,16 +48,17 @@ defmodule Util do
   end
 
   def ingresar(mensaje, :entero) do
-    ingresar(mensaje, &String.to_integer/1 , :entero)
+    ingresar(mensaje, &String.to_integer/1, :entero)
   end
+
   def ingresar(mensaje, :real) do
-    ingresar(mensaje, &parse_float/1 , :real)
+    ingresar(mensaje, &parse_float/1, :real)
   end
 
   defp parse_float(str) do
     case Float.parse(str) do
       {num, ""} -> num
-    _   -> raise ArgumentError, "Entrada no válida: #{str}"
+      _ -> raise ArgumentError, "Entrada no válida: #{str}"
     end
   end
 
@@ -68,8 +72,8 @@ defmodule Util do
         "Error, se espera que ingrese un #{tipo}\n"
         |> mostrar_error()
 
-      mensaje
-      |> ingresar(parser, tipo)
+        mensaje
+        |> ingresar(parser, tipo)
     end
   end
 
@@ -77,7 +81,7 @@ defmodule Util do
     :erlang.float_to_binary(valor, decimals: 2)
   end
 
-    def formatter_booleano(bool) do
+  def formatter_booleano(bool) do
     if bool do
       "SI"
     else
