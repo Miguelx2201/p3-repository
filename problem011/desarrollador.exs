@@ -31,7 +31,7 @@ defmodule Desarrollador do
     ruta = ingresar_desarrollador(mensaje)
     new_desarrolladores = [ruta | desarrolladores]
 
-    continuar = "¿Desea ingrear otra ruta? (SI O NO): "
+    continuar = "¿Desea ingresar otro desarrollador? (SI O NO): "
     |> Util.ingresar(:boolean)
 
     if continuar, do: ingresar_desarrollador(mensaje, new_desarrolladores, :desarrolladores), else: new_desarrolladores

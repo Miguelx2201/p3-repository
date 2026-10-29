@@ -1,10 +1,8 @@
 defmodule CSV do
 
   def escribir_csv(data, file_path, titulos, parser) do
-
-    generar_mensaje_csv(data, parser)
-    |> &(titulos <> &1).()
-    |> &(File.write(file_path, &1)).()
+    contenido = titulos <> generar_mensaje_csv(data, parser)
+    File.write(file_path, contenido)
   end
 
   def generar_mensaje_csv(data, parser) do

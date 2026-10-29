@@ -1,7 +1,7 @@
 Code.require_file("../utilities/util.ex", __DIR__)
 alias Util
-Code.require_file("desarrollador.exs")
-Code.require_file("persistencia.exs")
+Code.require_file("../problem011/desarrollador.exs", __DIR__)
+Code.require_file("../problem011/persistencia.exs", __DIR__)
 
 defmodule GestionDesarrolladores do
   def main do
