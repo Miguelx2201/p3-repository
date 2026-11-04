@@ -13,7 +13,7 @@ defmodule Simulador do
     send(pid_cafetera, {:cotizar, nombre, peso_paq, distancia, pid_main})
     send(pid_express, {:cotizar, nombre, peso_paq, distancia, pid_main})
 
-    # Acumulamos las 3 respuestas secuencialmente capturando el retorno de Enum.map
+    # Guardamos las 3 respuestas secuencialmente 
     resultado =
       Enum.map(1..3, fn _ ->
         receive do
