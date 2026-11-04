@@ -2,7 +2,6 @@ defmodule Transportadora do
   def iniciar(nombre_transportadora, tarifa_base, valor_kg, valor_km, tiempo_respuesta) do
     IO.puts("Iniciando transportadora #{nombre_transportadora}...")
 
-    # Capturamos el PID retornado por spawn
     pid = spawn(fn -> esperar_cotizacion(nombre_transportadora, tarifa_base, valor_kg, valor_km, tiempo_respuesta) end)
 
     pid
@@ -15,7 +14,7 @@ defmodule Transportadora do
         tarifa_total = tarifa_base + (peso_paq * valor_kg) + (distancia * valor_km)
         IO.puts("¡La transportadora #{nombre_transportadora} está trabajando para tener su cotización lo más pronto posible!")
 
-        Process.sleep(tiempo_respuesta) # Corregido Process
+        Process.sleep(tiempo_respuesta) # Simulamos el tiempo de respuesta de la transportadora
         send(pid_main, {:cotizacion, nombre_transportadora, nombre_cliente, tarifa_total})
         IO.puts("¡#{nombre_cliente} ya realizamos tu cotización desde #{nombre_transportadora}!")
 
