@@ -22,7 +22,7 @@ defmodule Transportadora do
         esperar_cotizacion(nombre_transportadora, tarifa_base, valor_kg, valor_km, tiempo_respuesta)
 
       {:terminar} ->
-        IO.puts("¡Proceso de cotización de la empresa #{nombre_transportadora} ha finalizado!")
+        "Termino el proceso de cotización de la empresa #{nombre_transportadora}"
     end
   end
 end

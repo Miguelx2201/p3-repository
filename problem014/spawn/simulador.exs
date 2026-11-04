@@ -1,6 +1,6 @@
-Code.require_file("transportadora.exs")
-Code.require_file("../utilities/util.ex", __DIR__)
-alias Util
+Code.require_file("transportadora.exs", __DIR__)
+Code.require_file("../../utilities/util.ex", __DIR__)
+
 
 defmodule Simulador do
   def main do
